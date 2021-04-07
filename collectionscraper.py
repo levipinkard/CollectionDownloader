@@ -92,6 +92,8 @@ if coll_id != -1:
 	get_all_files(clean_list)
 else:
 	print("Invalid collection info, not found")
+	os.chdir("..")
+	shutil.rmtree(coll_name, ignore_errors=True)
 	sys.exit()
 
 #print(j[0]['id'])
