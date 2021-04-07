@@ -12,7 +12,11 @@ def get_all_files(thing_list):
 		thing_resp = requests.get(base_url + "/things/" + str(i) + "/", headers = headers, data=json.dumps(params))
 		thing_json = thing_resp.json()
 		#print(json.dumps(thing_json, indent=4))
-		file_list.append([thing_json['name'], thing_json['files_url']])
+		#sys.stdout.flush()
+		if 'error' in thing_json:
+			print("Found deleted Object")
+		else:
+			file_list.append([thing_json['name'], thing_json['files_url']])
 		#print(thing_json['files_url'])
 	#print(file_list)
 	for h in file_list:
