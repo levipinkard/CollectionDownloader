@@ -54,8 +54,9 @@ headers = {
 page_count = 1
 params = {}
 shutil.rmtree(coll_name, ignore_errors=True)
-os.mkdir(coll_name)
-os.chdir(coll_name)
+clean_name = ''.join(i for i in coll_name if not i in bad_chars)
+os.mkdir(clean_name)
+os.chdir(clean_name)
 
 #Gets all collections from a given user (might only support users with <= 30 collections, pagination might be needed here too, would be trickier)
 response = requests.get(base_url + "/users/" + author_name + "/collections/{$all}", headers = headers, data=json.dumps(params)) 
@@ -90,5 +91,5 @@ if coll_id != -1:
 else:
 	print("Invalid collection info, not found")
 	os.chdir("..")
-	shutil.rmtree(coll_name, ignore_errors=True)
+	shutil.rmtree(clean_name, ignore_errors=True)
 	sys.exit()
