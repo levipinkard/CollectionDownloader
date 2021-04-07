@@ -13,8 +13,8 @@ def get_all_files(thing_list):
 		thing_json = thing_resp.json()
 		#print(json.dumps(thing_json, indent=4))
 		file_list.append([thing_json['name'], thing_json['files_url']])
-		print(thing_json['files_url'])
-	print(file_list)
+		#print(thing_json['files_url'])
+	#print(file_list)
 	for h in file_list:
 		fixed_name = ''.join(i for i in h[0] if not i in bad_chars)
 		os.mkdir(fixed_name)
@@ -22,8 +22,9 @@ def get_all_files(thing_list):
 		file_resp = requests.get(h[1], headers = headers, data=json.dumps(params))
 		file_json = file_resp.json()
 		#print(json.dumps(file_json, indent=4))
+		print("Downloading " + fixed_name)
 		for k in file_json:
-			print(json.dumps(k, indent=4))
+			#print(json.dumps(k, indent=4))
 			file_download = requests.get(k['download_url'], headers = headers, data=json.dumps(params))
 			open(k['name'], 'wb').write(file_download.content)
 		os.chdir("..")
@@ -54,14 +55,15 @@ os.chdir(coll_name)
 response = requests.get(base_url + "/users/" + author_name + "/collections/{$all}", headers = headers, data=json.dumps(params)) 
 j = response.json()
 coll_id = -1
-print(json.dumps(j, indent=4))
+#print(json.dumps(j, indent=4))
 for i in j:
 	if i['name'].lower() == coll_name.lower():
-		print(i['id'])
+		#print(i['id'])
 		coll_id = i['id']
 		page_count = math.ceil(i['count'] / 30)
-		print(page_count)
+		#print(page_count)
 if coll_id != -1:
+	print("Found collection!")
 	id_list = []
 	for x in range(0, 2 + page_count):
 		params = {
@@ -82,10 +84,10 @@ if coll_id != -1:
 	for i in id_list:
 		if i not in clean_list:
 			clean_list.append(i)
-	print(len(clean_list))
+	print("Downloading " + str(len(clean_list)) + " objects")
 	get_all_files(clean_list)
 else:
-	print("Invalid collection info!")
+	print("Invalid collection info, not found")
 	sys.exit()
 
 #print(j[0]['id'])
