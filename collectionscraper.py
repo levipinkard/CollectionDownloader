@@ -53,8 +53,8 @@ headers = {
 #Pagination count, set below
 page_count = 1
 params = {}
-shutil.rmtree(coll_name, ignore_errors=True)
 clean_name = ''.join(i for i in coll_name if not i in bad_chars)
+shutil.rmtree(clean_name, ignore_errors=True)
 os.mkdir(clean_name)
 os.chdir(clean_name)
 
