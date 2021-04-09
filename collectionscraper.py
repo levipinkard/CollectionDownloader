@@ -21,8 +21,9 @@ def get_all_files(thing_list):
 			file_list.append([thing_json['name'], thing_json['files_url']])
 	for h in file_list:
 		fixed_name = ''.join(i for i in h[0] if not i in bad_chars)
-		if os.path.isfile(fixed_name):
-			fixed_name += "Dup"
+		#Handles two things with the same name
+		if os.path.exists(fixed_name):
+			fixed_name += " Dup"
 		os.mkdir(fixed_name)
 		os.chdir(fixed_name)
 		file_resp = requests.get(h[1], headers = headers, data=json.dumps(params))
